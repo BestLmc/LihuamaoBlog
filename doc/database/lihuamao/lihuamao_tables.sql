@@ -3,20 +3,20 @@
 
 CREATE DATABASE /*!32312 IF NOT EXISTS*/`lihuamao_blog` /*!40100 DEFAULT CHARACTER SET utf8 */;
 
-USE `mogu_blog`;
+USE `lihuamao_blog`;
 
 
-CREATE TABLE `sys_admin` (
+CREATE TABLE `t_admin` (
     `uid` varchar(32) NOT NULL COMMENT '唯一uid',
-    `user_name` varchar(255) NOT NULL COMMENT '用户名',
-    `pass_word` varchar(255) NOT NULL COMMENT '密码',
+    `username` varchar(255) NOT NULL COMMENT '用户名',
+    `password` varchar(255) NOT NULL COMMENT '密码',
     `gender` varchar(1) DEFAULT NULL COMMENT '性别(1:男2:女)',
     `avatar` varchar(100) DEFAULT NULL COMMENT '个人头像',
     `email` varchar(60) DEFAULT NULL COMMENT '邮箱',
     `birthday` date DEFAULT NULL COMMENT '出生年月日',
     `mobile` varchar(11) DEFAULT NULL COMMENT '手机',
     `valid_code` varchar(50) DEFAULT NULL COMMENT '邮箱验证码',
-    `summary` varchar(200) DEFAULT NULL COMMENT '自我简介最多150字',
+    `introduce` varchar(200) DEFAULT NULL COMMENT '自我简介最多150字',
     `login_count` int(11) unsigned DEFAULT '0' COMMENT '登录次数',
     `last_login_time` datetime DEFAULT NULL COMMENT '最后登录时间',
     `last_login_ip` varchar(50) DEFAULT '127.0.0.1' COMMENT '最后登录IP',
@@ -24,15 +24,56 @@ CREATE TABLE `sys_admin` (
     `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '创建时间',
     `update_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '更新时间',
     `nick_name` varchar(255) DEFAULT NULL COMMENT '昵称',
-    `qq_number` varchar(255) DEFAULT NULL COMMENT 'QQ号',
-    `we_chat` varchar(255) DEFAULT NULL COMMENT '微信号',
-    `occupation` varchar(255) DEFAULT NULL COMMENT '职业',
-    `github` varchar(255) DEFAULT NULL COMMENT 'github地址',
-    `gitee` varchar(255) DEFAULT NULL COMMENT 'gitee地址',
     `role_uid` varchar(32) DEFAULT NULL COMMENT '拥有的角色uid',
-    `person_resume` text COMMENT '履历',
     PRIMARY KEY (`uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='管理员表';
+
+
+/*Table structure for table `t_role` */
+
+DROP TABLE IF EXISTS `t_role`;
+
+CREATE TABLE `t_role` (
+    `uid` varchar(32) NOT NULL COMMENT '角色id',
+    `role_name` varchar(255) NOT NULL COMMENT '角色名',
+    `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '创建时间',
+    `update_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '更新时间',
+    `status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
+    `introduce` varchar(255) DEFAULT NULL COMMENT '角色介绍',
+    `menu_uids` text COMMENT '角色管辖的菜单的UID',
+    PRIMARY KEY (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+/*Table structure for table `t_category_menu` */
+
+DROP TABLE IF EXISTS `t_menu`;
+
+CREATE TABLE `t_menu` (
+    `uid` varchar(32) NOT NULL COMMENT '唯一uid',
+    `name` varchar(255) NOT NULL COMMENT '菜单名称',
+    `menu_level` tinyint(1) DEFAULT NULL COMMENT '菜单级别',
+    `introduce` varchar(200) DEFAULT NULL COMMENT '简介',
+    `parent_uid` varchar(32) DEFAULT NULL COMMENT '父uid',
+    `url` varchar(255) DEFAULT NULL COMMENT 'url地址',
+    `icon` varchar(50) DEFAULT NULL COMMENT '图标',
+    `sort` int(11) DEFAULT '0' COMMENT '排序字段，越大越靠前',
+    `status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
+    `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '创建时间',
+    `update_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '更新时间',
+    `is_show` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否显示 1:是 0:否',
+    `menu_type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '菜单类型 0: 菜单   1: 按钮',
+    PRIMARY KEY (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='菜单表';
+
+
+
+
+
+
+
+
+
 
 /*Table structure for table `t_user` */
 
@@ -70,37 +111,22 @@ CREATE TABLE `t_user` (
     PRIMARY KEY (`uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户表';
 
-/*Table structure for table `t_role` */
-
-DROP TABLE IF EXISTS `t_role`;
-
-CREATE TABLE `t_role` (
-                          `uid` varchar(32) NOT NULL COMMENT '角色id',
-                          `role_name` varchar(255) NOT NULL COMMENT '角色名',
-                          `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '创建时间',
-                          `update_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '更新时间',
-                          `status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
-                          `summary` varchar(255) DEFAULT NULL COMMENT '角色介绍',
-                          `category_menu_uids` text COMMENT '角色管辖的菜单的UID',
-                          PRIMARY KEY (`uid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 
 /*Table structure for table `t_visitor` */
 
 DROP TABLE IF EXISTS `t_visitor`;
 
 CREATE TABLE `t_visitor` (
-                             `uid` varchar(32) NOT NULL COMMENT '唯一uid',
-                             `user_name` varchar(255) DEFAULT NULL COMMENT '用户名',
-                             `email` varchar(255) NOT NULL COMMENT '邮箱',
-                             `login_count` int(11) unsigned DEFAULT '0' COMMENT '登录次数',
-                             `last_login_time` datetime DEFAULT NULL COMMENT '最后登录时间',
-                             `last_login_ip` varchar(50) DEFAULT '127.0.0.1' COMMENT '最后登录IP',
-                             `status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
-                             `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '创建时间',
-                             `update_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '更新时间',
-                             PRIMARY KEY (`uid`)
+    `uid` varchar(32) NOT NULL COMMENT '唯一uid',
+    `user_name` varchar(255) DEFAULT NULL COMMENT '用户名',
+    `email` varchar(255) NOT NULL COMMENT '邮箱',
+    `login_count` int(11) unsigned DEFAULT '0' COMMENT '登录次数',
+    `last_login_time` datetime DEFAULT NULL COMMENT '最后登录时间',
+    `last_login_ip` varchar(50) DEFAULT '127.0.0.1' COMMENT '最后登录IP',
+    `status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
+    `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '创建时间',
+    `update_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '更新时间',
+    PRIMARY KEY (`uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='游客表';
 
 /*Table structure for table `t_blog` */
@@ -108,33 +134,33 @@ CREATE TABLE `t_visitor` (
 DROP TABLE IF EXISTS `t_blog`;
 
 CREATE TABLE `t_blog` (
-                          `uid` varchar(32) NOT NULL COMMENT '唯一uid',
-                          `title` varchar(200) DEFAULT NULL COMMENT '博客标题',
-                          `summary` varchar(200) DEFAULT NULL COMMENT '博客简介',
-                          `content` longtext COMMENT '博客内容',
-                          `tag_uid` varchar(255) DEFAULT NULL COMMENT '标签uid',
-                          `click_count` int(11) DEFAULT '0' COMMENT '博客点击数',
-                          `collect_count` int(11) DEFAULT '0' COMMENT '博客收藏数',
-                          `file_uid` varchar(255) DEFAULT NULL COMMENT '标题图片uid',
-                          `status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
-                          `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '创建时间',
-                          `update_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '更新时间',
-                          `admin_uid` varchar(32) DEFAULT NULL COMMENT '管理员uid',
-                          `is_original` varchar(1) DEFAULT '1' COMMENT '是否原创（0:不是 1：是）',
-                          `author` varchar(255) DEFAULT NULL COMMENT '作者',
-                          `articles_part` varchar(255) DEFAULT NULL COMMENT '文章出处',
-                          `blog_sort_uid` varchar(32) DEFAULT NULL COMMENT '博客分类UID',
-                          `level` tinyint(1) DEFAULT '0' COMMENT '推荐等级(0:正常)',
-                          `is_publish` varchar(1) DEFAULT '1' COMMENT '是否发布：0：否，1：是',
-                          `sort` int(11) NOT NULL DEFAULT '0' COMMENT '排序字段',
-                          `open_comment` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否开启评论(0:否 1:是)',
-                          `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '类型【0 博客， 1：推广】',
-                          `outside_link` varchar(1024) DEFAULT NULL COMMENT '外链【如果是推广，那么将跳转到外链】',
-                          `oid` int(11) NOT NULL AUTO_INCREMENT COMMENT '唯一oid',
-                          `user_uid` varchar(32) DEFAULT NULL COMMENT '投稿用户UID',
-                          `article_source` tinyint(1) NOT NULL DEFAULT '0' COMMENT '文章来源【0 后台添加，1 用户投稿】',
-                          PRIMARY KEY (`uid`,`oid`),
-                          KEY `oid` (`oid`)
+    `uid` varchar(32) NOT NULL COMMENT '唯一uid',
+    `title` varchar(200) DEFAULT NULL COMMENT '博客标题',
+    `summary` varchar(200) DEFAULT NULL COMMENT '博客简介',
+    `content` longtext COMMENT '博客内容',
+    `tag_uid` varchar(255) DEFAULT NULL COMMENT '标签uid',
+    `click_count` int(11) DEFAULT '0' COMMENT '博客点击数',
+    `collect_count` int(11) DEFAULT '0' COMMENT '博客收藏数',
+    `file_uid` varchar(255) DEFAULT NULL COMMENT '标题图片uid',
+    `status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
+    `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '创建时间',
+    `update_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '更新时间',
+    `admin_uid` varchar(32) DEFAULT NULL COMMENT '管理员uid',
+    `is_original` varchar(1) DEFAULT '1' COMMENT '是否原创（0:不是 1：是）',
+    `author` varchar(255) DEFAULT NULL COMMENT '作者',
+    `articles_part` varchar(255) DEFAULT NULL COMMENT '文章出处',
+    `blog_sort_uid` varchar(32) DEFAULT NULL COMMENT '博客分类UID',
+    `level` tinyint(1) DEFAULT '0' COMMENT '推荐等级(0:正常)',
+    `is_publish` varchar(1) DEFAULT '1' COMMENT '是否发布：0：否，1：是',
+    `sort` int(11) NOT NULL DEFAULT '0' COMMENT '排序字段',
+    `open_comment` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否开启评论(0:否 1:是)',
+    `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '类型【0 博客， 1：推广】',
+    `outside_link` varchar(1024) DEFAULT NULL COMMENT '外链【如果是推广，那么将跳转到外链】',
+    `oid` int(11) NOT NULL AUTO_INCREMENT COMMENT '唯一oid',
+    `user_uid` varchar(32) DEFAULT NULL COMMENT '投稿用户UID',
+    `article_source` tinyint(1) NOT NULL DEFAULT '0' COMMENT '文章来源【0 后台添加，1 用户投稿】',
+    PRIMARY KEY (`uid`,`oid`),
+    KEY `oid` (`oid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8 COMMENT='博客表';
 
 
