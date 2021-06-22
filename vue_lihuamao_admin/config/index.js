@@ -10,11 +10,20 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+      '/api': {
+        target: 'http://localhost:8001/', // 设置你调用的接口域名
+        changeOrigin: true, // 是否跨域
+        pathRewrite: {
+          '^/api': '/'  // 这里可以理解为用‘/api’来代替target里面的地址，例如我们调用http://jspang.com/DemoApi/oftenGoods.php，直接写成‘/api/DemoApi/oftenGoods.php’就可以了
+        }
+      },
+
+    },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
-    port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
+    port: 9501, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,
     notifyOnErrors: true,

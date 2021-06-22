@@ -12,7 +12,7 @@ import org.apache.ibatis.annotations.Param;
  * @author jobob
  * @since 2021-06-20
  */
-public interface TMenuMapper extends SuperMapper<TMenu> {
+public interface MenuMapper extends SuperMapper<TMenu> {
 
     public TMenu getMenuById(@Param("uid") String uid);
 }

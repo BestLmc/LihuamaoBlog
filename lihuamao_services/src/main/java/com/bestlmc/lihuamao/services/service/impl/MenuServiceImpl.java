@@ -3,8 +3,8 @@ package com.bestlmc.lihuamao.services.service.impl;
 
 import com.bestlmc.lihuamao.base.ServiceImpl.SuperServiceImpl;
 import com.bestlmc.lihuamao.commons.been.TMenu;
-import com.bestlmc.lihuamao.services.mapper.TMenuMapper;
-import com.bestlmc.lihuamao.services.service.ITMenuService;
+import com.bestlmc.lihuamao.services.mapper.MenuMapper;
+import com.bestlmc.lihuamao.services.service.MenuService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -15,17 +15,17 @@ import javax.annotation.Resource;
  * 菜单表 服务实现类
  * </p>
  *
- * @author jobob
+ * @author bestlmc
  * @since 2021-06-20
  */
 @Service
-public class TMenuServiceImpl extends SuperServiceImpl<TMenuMapper, TMenu> implements ITMenuService {
+public class MenuServiceImpl extends SuperServiceImpl<MenuMapper, TMenu> implements MenuService {
 
     @Resource
-    TMenuMapper tMenuMapper;
+    MenuMapper menuMapper;
 
     @Override
     public TMenu getTest() {
-        return tMenuMapper.getMenuById("111");
+        return menuMapper.getMenuById("111");
     }
 }

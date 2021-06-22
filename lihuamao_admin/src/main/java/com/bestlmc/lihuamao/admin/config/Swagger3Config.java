@@ -32,7 +32,7 @@ public class Swagger3Config {
         return new ApiInfoBuilder()
                 .title("狸花猫接口文档")
                 .description("更多请咨询服务开发者Bestlmc")
-//                .contact(new Contact("bestlmc", "http://www.ruiyeclub.cn", "ruiyeclub@foxmail.com"))
+                .contact(new Contact("bestlmc", "http://www.bestlmc.xyz/", "bestlmc@foxmail.com"))
                 .version("1.0")
                 .build();
     }

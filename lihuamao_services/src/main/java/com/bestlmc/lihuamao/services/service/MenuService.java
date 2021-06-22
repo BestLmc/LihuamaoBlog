@@ -12,7 +12,7 @@ import com.bestlmc.lihuamao.commons.been.TMenu;
  * @author jobob
  * @since 2021-06-20
  */
-public interface ITMenuService extends SuperService<TMenu> {
+public interface MenuService extends SuperService<TMenu> {
 
     public TMenu getTest();
 }

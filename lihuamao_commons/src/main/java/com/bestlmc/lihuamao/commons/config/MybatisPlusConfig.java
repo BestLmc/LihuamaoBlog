@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * @Description: TODO(这里用一句话描述这个类的作用)
+ * @Description: mybatis-plus配置类
  * @Author bestlmc
  * @Date 2021/6/20 23:51
  */
