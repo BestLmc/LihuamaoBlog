@@ -2,7 +2,7 @@
   <div class="main-container">
     <el-container style="height: 100vh; width: 100%; border: 1px red solid">
       <!-- 左侧菜单栏start -->
-      <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
+      <el-aside width="200px" style="background-color: #545c64">
         <Sidebar />
       </el-aside>
 
