@@ -6,6 +6,8 @@
 #### 软件架构
 软件架构说明
 
+swagger2:
+https://doc.xiaominfo.com/knife4j/
 
 #### 安装教程
 

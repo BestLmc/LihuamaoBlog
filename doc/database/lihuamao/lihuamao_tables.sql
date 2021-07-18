@@ -21,8 +21,8 @@ CREATE TABLE `t_admin` (
     `last_login_time` datetime DEFAULT NULL COMMENT '最后登录时间',
     `last_login_ip` varchar(50) DEFAULT '127.0.0.1' COMMENT '最后登录IP',
     `status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
-    `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '创建时间',
-    `update_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '更新时间',
+    `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
     `nick_name` varchar(255) DEFAULT NULL COMMENT '昵称',
     `role_uid` varchar(32) DEFAULT NULL COMMENT '拥有的角色uid',
     PRIMARY KEY (`uid`)
@@ -36,8 +36,8 @@ DROP TABLE IF EXISTS `t_role`;
 CREATE TABLE `t_role` (
     `uid` varchar(32) NOT NULL COMMENT '角色id',
     `role_name` varchar(255) NOT NULL COMMENT '角色名',
-    `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '创建时间',
-    `update_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '更新时间',
+    `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
     `status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
     `introduce` varchar(255) DEFAULT NULL COMMENT '角色介绍',
     `menu_uids` text COMMENT '角色管辖的菜单的UID',
@@ -59,8 +59,8 @@ CREATE TABLE `t_menu` (
     `icon` varchar(50) DEFAULT NULL COMMENT '图标',
     `sort` int(11) DEFAULT '0' COMMENT '排序字段，越大越靠前',
     `status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
-    `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '创建时间',
-    `update_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '更新时间',
+    `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
     `is_show` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否显示 1:是 0:否',
     `menu_type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '菜单类型 0: 菜单   1: 按钮',
     PRIMARY KEY (`uid`)

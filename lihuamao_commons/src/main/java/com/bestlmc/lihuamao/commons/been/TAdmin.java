@@ -4,7 +4,6 @@ import com.bestlmc.lihuamao.base.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 /**
  * <p>
@@ -16,7 +15,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class TAdmin extends BaseEntity {
+public class TAdmin extends BaseEntity<TAdmin> {
 
 
     /**
@@ -47,7 +46,7 @@ public class TAdmin extends BaseEntity {
     /**
      * 出生年月日
      */
-    private LocalDate birthday;
+    private LocalDateTime birthday;
 
     /**
      * 手机

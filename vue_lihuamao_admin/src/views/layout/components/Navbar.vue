@@ -5,13 +5,16 @@
       @command="handleMenu"
     >
       <span class="el-dropdown-link">
-        <a href="#">
-          <img
-            id="admin-img"
-            style="margin-right: 15px; height: 60px; width: 60px"
-            src="@/assets/img/lihuamao.jpg"
-          />
-        </a>
+        <el-avatar :size="60" @error="errorHandler">
+          <!-- src="require('../../assets/img/lihuamao.jpg')" -->
+          <a href="#">
+            <img
+              id="admin-img"
+              style="height: 60px; width: 60px"
+              src="/static/default.png"
+            />
+          </a>
+        </el-avatar>
       </span>
       <!-- <i
             class="el-icon-user"
@@ -46,6 +49,9 @@ export default {
       } else {
         this.$router.push({ path: "/system/personalCenter" });
       }
+    },
+    errorHandler() {
+      return true;
     },
   },
 };

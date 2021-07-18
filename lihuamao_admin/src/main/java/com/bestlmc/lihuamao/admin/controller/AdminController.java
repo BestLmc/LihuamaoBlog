@@ -7,13 +7,11 @@ import com.bestlmc.lihuamao.commons.been.TAdmin;
 import com.bestlmc.lihuamao.commons.been.TMenu;
 import com.bestlmc.lihuamao.commons.http.CommonResult;
 import com.bestlmc.lihuamao.services.service.AdminService;
+import com.bestlmc.lihuamao.services.vo.AdminVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -32,7 +30,7 @@ public class AdminController {
     @Resource
     AdminService adminService;
 
-    @ApiOperation(value = "获取菜单列表", notes = "获取菜单列表")
+    @ApiOperation(value = "获取管理员列表", notes = "获取管理员列表")
     @GetMapping("/getList")
     public CommonResult getMenuList(HttpServletRequest request,
                                     @ApiParam(name = "keyword", value = "关键字", required = false) @RequestParam(name = "keyword", required = false) String keyword,
@@ -50,5 +48,33 @@ public class AdminController {
     }
 
 
+
+    @ApiOperation(value = "新增管理员", notes = "新增管理员")
+    @PostMapping("/add")
+    public CommonResult addAdmin(@RequestBody AdminVO adminVO){
+        String result = adminService.addAdmin(adminVO);
+        return new CommonResult(200, "success", result);
+    }
+
+    @ApiOperation(value = "修改管理员信息", notes = "修改管理员信息")
+    @PostMapping("/update")
+    public CommonResult updateAdmin(@RequestBody AdminVO adminVO){
+        String result = adminService.addAdmin(adminVO);
+        return new CommonResult(200, "success", result);
+    }
+
+    @ApiOperation(value = "查询管理员信息", notes = "查询管理员信息")
+    @GetMapping("/get")
+    public CommonResult getAdmin( @ApiParam(name = "uid", value = "管理员id", required = false) @RequestParam(name = "uid", required = false) String uid){
+        AdminVO adminVO = adminService.getAdminById(uid);
+        return new CommonResult(200, "success", adminVO);
+    }
+
+    @ApiOperation(value = "删除管理员信息", notes = "删除管理员信息")
+    @GetMapping("/delete")
+    public CommonResult deleteAdmin(@ApiParam(name = "uid", value = "管理员id", required = false) @RequestParam(name = "uid", required = false) String uid){
+        boolean removeById = adminService.removeById(uid);
+        return new CommonResult(200, "success", removeById);
+    }
 
 }

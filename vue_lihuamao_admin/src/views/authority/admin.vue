@@ -14,7 +14,6 @@
         type="primary"
         icon="el-icon-search"
         @click="handleFind"
-        v-permission="'/admin/getList'"
         >查找</el-button
       >
       <el-button
@@ -22,7 +21,6 @@
         type="primary"
         @click="handleAdd"
         icon="el-icon-edit"
-        v-permission="'/admin/add'"
         >添加</el-button
       >
     </div>
@@ -39,8 +37,8 @@
       </el-table-column>
       <el-table-column prop="gender" label="性别" width="120">
       </el-table-column>
-      <el-table-column prop="email" label="邮箱" width="120"> </el-table-column>
-      <el-table-column prop="birthday" label="出生日期" width="150">
+      <el-table-column prop="email" label="邮箱" width="180"> </el-table-column>
+      <el-table-column prop="birthday" label="出生日期" width="180">
       </el-table-column>
 
       <el-table-column prop="mobile" label="手机号码" width="120">
@@ -49,25 +47,13 @@
 
       <el-table-column label="操作" fixed="right" min-width="250">
         <template slot-scope="scope">
-          <el-button
-            @click="handRest(scope.row)"
-            type="warning"
-            size="small"
-            v-permission="'/admin/restPwd'"
+          <el-button @click="handRest(scope.row)" type="warning" size="small"
             >重置密码</el-button
           >
-          <el-button
-            @click="handleEdit(scope.row)"
-            type="primary"
-            size="small"
-            v-permission="'/admin/edit'"
+          <el-button @click="handleEdit(scope.row)" type="primary" size="small"
             >编辑</el-button
           >
-          <el-button
-            @click="handleDelete(scope.row)"
-            type="danger"
-            size="small"
-            v-permission="'/admin/delete'"
+          <el-button @click="handleDelete(scope.row)" type="danger" size="small"
             >删除</el-button
           >
         </template>
@@ -87,17 +73,6 @@
     <!-- 添加或修改对话框 -->
     <el-dialog :title="title" :visible.sync="dialogFormVisible">
       <el-form :model="form" :rules="rules" ref="form">
-        <el-form-item label="用户头像" :label-width="formLabelWidth">
-          <div class="imgBody">
-            <i
-              class="el-icon-error inputClass"
-              v-show="icon"
-              @click="deletePhoto()"
-              @mouseover="icon = true"
-            ></i>
-          </div>
-        </el-form-item>
-
         <el-row :gutter="24">
           <el-col :span="10">
             <el-form-item
@@ -111,17 +86,61 @@
               ></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="10">
-            <el-form-item label="昵称" :label-width="formLabelWidth">
-              <el-input
-                v-model="form.nickName"
-                placeholder="请输入昵称"
-              ></el-input>
-            </el-form-item>
-          </el-col>
         </el-row>
 
         <el-row :gutter="24">
+          <el-col :span="10">
+            <el-form-item
+              label="昵称"
+              :label-width="formLabelWidth"
+              prop="nickName"
+            >
+              <el-input
+                v-model="form.nickName"
+                placeholder="请输入昵称"
+              ></el-input> </el-form-item
+          ></el-col>
+        </el-row>
+        <el-row :gutter="24">
+          <el-col :span="10">
+            <el-form-item
+              label="密码"
+              :label-width="formLabelWidth"
+              prop="password"
+            >
+              <el-input
+                placeholder="请输入密码"
+                v-model="form.passWord"
+                show-password
+              ></el-input>
+            </el-form-item>
+          </el-col> </el-row
+        ><el-row :gutter="24">
+          <el-col :span="10">
+            <el-form-item
+              label="确认密码"
+              :label-width="formLabelWidth"
+              prop="comfirmPassword"
+            >
+              <el-input
+                placeholder="请重新输入密码"
+                v-model="form.comfirmPassword"
+                show-password
+              ></el-input>
+            </el-form-item>
+          </el-col> </el-row
+        ><el-row :gutter="24">
+          <el-col :span="10">
+            <el-form-item
+              label="性别"
+              :label-width="formLabelWidth"
+              prop="gender"
+            >
+              <el-radio v-model="form.gender" label="1">男</el-radio>
+              <el-radio v-model="form.gender" label="2">女</el-radio>
+            </el-form-item>
+          </el-col> </el-row
+        ><el-row :gutter="24">
           <el-col :span="10">
             <el-form-item
               label="邮箱"
@@ -134,6 +153,25 @@
               ></el-input>
             </el-form-item>
           </el-col>
+        </el-row>
+        <el-row :gutter="24">
+          <el-col :span="10">
+            <el-form-item
+              label="出生日期"
+              :label-width="formLabelWidth"
+              prop="birthday"
+            >
+              <el-date-picker
+                v-model="form.birthday"
+                value-format="yyyy-MM-dd HH:mm:ss"
+                type="datetime"
+                placeholder="选择日期"
+              >
+              </el-date-picker>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="24">
           <el-col :span="10">
             <el-form-item
               label="手机号"
@@ -147,42 +185,18 @@
             </el-form-item>
           </el-col>
         </el-row>
-
         <el-row :gutter="24">
-          <el-col :span="10">
+          <el-col :span="120">
             <el-form-item
-              label="QQ号码"
+              label="自我介绍"
               :label-width="formLabelWidth"
-              prop="qqNumber"
+              prop="introduce"
             >
               <el-input
-                v-model="form.qqNumber"
-                placeholder="请输入QQ号码"
+                type="textarea"
+                v-model="form.introduce"
+                placeholder="请输入自我介绍"
               ></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="10">
-            <el-form-item label="职业" :label-width="formLabelWidth">
-              <el-input
-                v-model="form.occupation"
-                placeholder="请输入职业"
-              ></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row :gutter="24">
-          <el-col :span="10">
-            <el-form-item
-              label="网盘容量(MB)"
-              :label-width="formLabelWidth"
-              prop="maxStorageSize"
-            >
-              <el-input-number
-                v-model="form.maxStorageSize"
-                :min="0"
-                label="用户最大网盘容量"
-              ></el-input-number>
             </el-form-item>
           </el-col>
         </el-row>
@@ -196,12 +210,26 @@
 </template>
 
 <script>
-import { getAdminList } from "@/api/admin/admin";
+import {
+  getAdminList,
+  addAdmin,
+  deleteAdmin,
+  getAdmin,
+} from "@/api/admin/admin";
 export default {
   created() {
     this.initData();
   },
   data() {
+    var validatePass = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请再次输入密码"));
+      } else if (value !== this.form.passWord) {
+        callback(new Error("两次输入密码不一致!"));
+      } else {
+        callback();
+      }
+    };
     return {
       keyword: "",
       currentPage: 1,
@@ -214,9 +242,22 @@ export default {
       formLabelWidth: "120px",
       title: "增加管理员",
       icon: true, //控制删除图标的显示
+
       rules: {
         userName: [
           { required: true, message: "用户名不能为空", trigger: "blur" },
+          { min: 1, max: 20, message: "长度在1到20个字符" },
+        ],
+        nickName: [
+          { required: true, message: "昵称不能为空", trigger: "blur" },
+          { min: 1, max: 20, message: "长度在1到20个字符" },
+        ],
+        passWord: [
+          { required: true, message: "密码不能为空", trigger: "blur" },
+          { min: 1, max: 20, message: "长度在1到20个字符" },
+        ],
+        comfirmPassword: [
+          { required: true, validator: validatePass, trigger: "blur" },
           { min: 1, max: 20, message: "长度在1到20个字符" },
         ],
         dictValue: [
@@ -226,6 +267,7 @@ export default {
         gender: [{ required: true, message: "性别不能为空", trigger: "blur" }],
         email: [
           {
+            required: false,
             pattern: /\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}/,
             message: "请输入正确的邮箱",
           },
@@ -276,20 +318,17 @@ export default {
           this.$commonUtil.message.info("已取消删除");
         });
     },
-    handleDelete: function (row) {
-      this.$confirm("此操作将该管理员删除, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      })
-        .then(() => {
-          let params = new URLSearchParams();
-          var adminUids = [];
-          adminUids.push(row.uid);
-          params.append("adminUids", adminUids);
+    handleEdit: function (row) {
+      this.dialogFormVisible = true;
+      getAdmin(row.uid)
+        .then((res) => {
+          console.log(res);
+          if (res.code == 200) {
+            this.form = res.data;
+          }
         })
         .catch(() => {
-          this.$commonUtil.message.info("已取消删除");
+          this.$message.error("查询出错！");
         });
     },
     handleDelete: function (row) {
@@ -298,11 +337,23 @@ export default {
         cancelButtonText: "取消",
         type: "warning",
       })
-        .then(() => {
-          let params = new URLSearchParams();
-          var adminUids = [];
-          adminUids.push(row.uid);
-          params.append("adminUids", adminUids);
+        .then((res) => {
+          console.log(res);
+          console.log(row);
+          //   let params = new URLSearchParams();
+          //   adminUids.push(row.uid);
+          //   params.append("uid", row.uid);
+          console.log(row.uid);
+          deleteAdmin(row.uid).then((res) => {
+            console.log(res);
+            if (res.code == 200) {
+              this.$message({
+                type: "success",
+                message: "删除成功!",
+              });
+              this.initData();
+            }
+          });
         })
         .catch(() => {
           this.$commonUtil.message.info("已取消删除");
@@ -311,6 +362,28 @@ export default {
     handleCurrentChange: function (val) {
       this.currentPage = val;
       this.initData();
+    },
+    submitForm: function () {
+      this.$refs.form.validate((valid) => {
+        if (!valid) {
+          console.log("校验出错");
+        } else {
+          console.log(this.form.nickName);
+          console.log(this.form);
+          addAdmin(this.form).then((response) => {
+            if (response.code == 200) {
+              this.$message({
+                message: response.message,
+                type: "success",
+              });
+              this.dialogFormVisible = false;
+              this.initData();
+            } else {
+              this.$commonUtil.message.error(response.message);
+            }
+          });
+        }
+      });
     },
   },
 };

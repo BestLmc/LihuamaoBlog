@@ -28,7 +28,7 @@ public class BaseEntity<T extends Model> extends Model {
     /**
      * 唯一UID
      */
-    @TableId(value = "uid", type = IdType.AUTO)
+    @TableId(value = "uid", type = IdType.UUID)
     private String uid;
 
     /**

@@ -11,3 +11,37 @@ export function getAdminList(params) {
         params
     })
 }
+
+/**
+ * 创建管理员
+ * @param params
+ */
+export function addAdmin(params) {
+    return request({
+        url: process.env.ADMIN_API + '/admin/add',
+        method: 'post',
+        data: params
+    })
+}
+
+/**
+ * 删除管理员
+ * @param params
+ */
+export function deleteAdmin(uid) {
+    return request({
+        url: process.env.ADMIN_API + '/admin/delete?uid=' + uid,
+        method: 'get'
+    })
+}
+
+/**
+ * 查询管理员
+ * @param params
+ */
+export function getAdmin(uid) {
+    return request({
+        url: process.env.ADMIN_API + '/admin/get?uid=' + uid,
+        method: 'get'
+    })
+}
