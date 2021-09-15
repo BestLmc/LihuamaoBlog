@@ -15,6 +15,7 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan(basePackages = {
         "com.bestlmc.lihuamao.admin.config",
         "com.bestlmc.lihuamao.admin.controller",
+        "com.bestlmc.lihuamao.admin.api",
         "com.bestlmc.lihuamao.services.service",
         "com.bestlmc.lihuamao.commons.config",
         "com.bestlmc.lihuamao.admin.config"})

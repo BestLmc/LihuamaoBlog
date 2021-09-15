@@ -7,8 +7,8 @@ package com.bestlmc.lihuamao.base.enums;
  */
 public class HttpCon {
 
-    public final static String success = "success";
-    public final static String fail = "fail";
+    public final static Integer success = 200;
+    public final static Integer fail = 400;
 
 
 

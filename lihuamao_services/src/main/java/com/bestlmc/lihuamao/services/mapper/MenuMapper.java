@@ -1,7 +1,7 @@
 package com.bestlmc.lihuamao.services.mapper;
 
 import com.bestlmc.lihuamao.base.mapper.SuperMapper;
-import com.bestlmc.lihuamao.commons.been.TMenu;
+import com.bestlmc.lihuamao.commons.been.Menu;
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -12,7 +12,7 @@ import org.apache.ibatis.annotations.Param;
  * @author jobob
  * @since 2021-06-20
  */
-public interface MenuMapper extends SuperMapper<TMenu> {
+public interface MenuMapper extends SuperMapper<Menu> {
 
-    public TMenu getMenuById(@Param("uid") String uid);
+    public Menu getMenuById(@Param("uid") String uid);
 }

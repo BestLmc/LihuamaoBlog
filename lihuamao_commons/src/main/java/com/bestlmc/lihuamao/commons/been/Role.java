@@ -1,5 +1,6 @@
 package com.bestlmc.lihuamao.commons.been;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.bestlmc.lihuamao.base.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,8 +14,8 @@ import lombok.EqualsAndHashCode;
  * @since 2021-06-22
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class TRole extends BaseEntity {
+@TableName("t_role")
+public class Role extends BaseEntity {
 
 
     /**

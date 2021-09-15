@@ -1,5 +1,6 @@
 package com.bestlmc.lihuamao.commons.been;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.bestlmc.lihuamao.base.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -14,8 +15,8 @@ import java.time.LocalDateTime;
  * @since 2021-06-22
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class TAdmin extends BaseEntity<TAdmin> {
+@TableName("t_admin")
+public class Admin extends BaseEntity<Admin> {
 
 
     /**

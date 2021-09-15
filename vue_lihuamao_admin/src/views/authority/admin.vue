@@ -211,11 +211,11 @@
 
 <script>
 import {
-  getAdminList,
+  getAdminPageList,
   addAdmin,
   deleteAdmin,
   getAdmin,
-} from "@/api/admin/admin";
+} from "@/api/authority/admin";
 export default {
   created() {
     this.initData();
@@ -287,10 +287,11 @@ export default {
   },
   methods: {
     initData() {
-      getAdminList(this.params).then((res) => {
+      getAdminPageList(this.params).then((res) => {
         console.log(res);
         // console.log(res.data.code);
-        let tableData = res.data;
+        let tableData = res.data.records;
+        this.total = res.data.total;
         this.tableData = tableData;
       });
     },

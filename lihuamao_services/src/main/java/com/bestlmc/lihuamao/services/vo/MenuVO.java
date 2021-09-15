@@ -1,24 +1,19 @@
-package com.bestlmc.lihuamao.commons.been;
+package com.bestlmc.lihuamao.services.vo;
 
-import com.bestlmc.lihuamao.base.entity.BaseEntity;
+import com.bestlmc.lihuamao.base.vo.BaseVO;
 import lombok.Data;
 
 /**
- * <p>
- * 菜单表
- * </p>
- *
- * @author jobob
- * @since 2021-06-20
+ * @Description: 菜单实体类
+ * @Author bestlmc
+ * @Date 2021/6/24 14:50
  */
 @Data
-public class TMenu extends BaseEntity {
-
-
+public class MenuVO extends BaseVO<MenuVO> {
     /**
      * 菜单名称
      */
-    private String name;
+    private String menuName;
 
     /**
      * 菜单级别
@@ -60,6 +55,5 @@ public class TMenu extends BaseEntity {
      * 菜单类型 0: 菜单   1: 按钮
      */
     private Boolean menuType;
-
 
 }

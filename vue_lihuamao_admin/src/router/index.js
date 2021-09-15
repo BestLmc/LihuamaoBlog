@@ -61,6 +61,18 @@ const routerMap = [
         name: '个人中心',
         component: () => import('@/views/system/personalCenter'),
         meta: { title: '个人中心', icon: 'personalCenter' }
+      },
+      {
+        path: 'systemDict',
+        name: '字典管理',
+        component: () => import('@/views/system/systemDict'),
+        meta: { title: '字典管理', icon: 'systemDict' }
+      },
+      {
+        path: 'systemDictItem',
+        name: '字典项管理',
+        component: () => import('@/views/system/systemDictItem'),
+        meta: { title: '字典项管理', icon: 'systemDictItem' }
       }
     ]
   },

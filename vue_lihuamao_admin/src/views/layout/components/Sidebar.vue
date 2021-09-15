@@ -12,6 +12,9 @@
         <template slot="title"
           ><i class="el-icon-setting"></i>系统管理</template
         >
+        <el-menu-item index="/system/systemDict"
+          ><i class="el-icon-sugar"></i>字典管理</el-menu-item
+        >
       </el-submenu>
       <el-submenu index="/authority">
         <template slot="title"><i class="el-icon-key"></i>权限管理</template>
@@ -49,6 +52,7 @@ export default {
   methods: {
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
+      // this.$router.push(keyPath);
     },
   },
 };

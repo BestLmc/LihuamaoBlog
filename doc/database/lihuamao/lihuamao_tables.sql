@@ -51,7 +51,7 @@ DROP TABLE IF EXISTS `t_menu`;
 
 CREATE TABLE `t_menu` (
     `uid` varchar(32) NOT NULL COMMENT '唯一uid',
-    `name` varchar(255) NOT NULL COMMENT '菜单名称',
+    `menu_name` varchar(255) NOT NULL COMMENT '菜单名称',
     `menu_level` tinyint(1) DEFAULT NULL COMMENT '菜单级别',
     `introduce` varchar(200) DEFAULT NULL COMMENT '简介',
     `parent_uid` varchar(32) DEFAULT NULL COMMENT '父uid',
@@ -65,6 +65,47 @@ CREATE TABLE `t_menu` (
     `menu_type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '菜单类型 0: 菜单   1: 按钮',
     PRIMARY KEY (`uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='菜单表';
+
+/*Table structure for table `t_sys_dict` */
+DROP TABLE IF EXISTS `t_sys_dict`;
+CREATE TABLE `t_sys_dict` (
+   `uid` varchar(32) NOT NULL COMMENT '主键',
+   `oid` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增键oid',
+   `dict_name` varchar(100) DEFAULT NULL COMMENT '字典名称',
+   `dict_code` varchar(50) DEFAULT NULL COMMENT '字典代码',
+   `create_by_uid` varchar(32) NOT NULL COMMENT '创建人UID',
+   `update_by_uid` varchar(32) NOT NULL COMMENT '最后更新人UID',
+   `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+   `status` tinyint(1) DEFAULT '0' COMMENT '状态(1:启用，0:停用)',
+   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+   `sort` int(11) NOT NULL DEFAULT '0' COMMENT '排序字段',
+   PRIMARY KEY (`uid`),
+   KEY `oid` (`oid`)
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8 COMMENT='字典表';
+
+/*Table structure for table `t_sys_dict_item` */
+DROP TABLE IF EXISTS `t_sys_dict_item`;
+CREATE TABLE `t_sys_dict_item` (
+   `uid` varchar(32) NOT NULL COMMENT '主键',
+   `oid` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增键oid',
+   `dict_uid` varchar(255) DEFAULT NULL COMMENT 't_sys_dict字典UID',
+   `item_label` varchar(255) DEFAULT NULL COMMENT '字典标签',
+   `item_value` varchar(255) DEFAULT NULL COMMENT '字典键值',
+   `create_by_uid` varchar(32) DEFAULT NULL COMMENT '创建人UID',
+   `update_by_uid` varchar(32) DEFAULT NULL COMMENT '最后更新人UID',
+   `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+   `status` tinyint(1) DEFAULT '0' COMMENT '状态(1:启用，0:停用)',
+   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+   `sort` int(11) NOT NULL DEFAULT '0' COMMENT '排序字段',
+   PRIMARY KEY (`uid`),
+   KEY `oid` (`oid`)
+) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8 COMMENT='字典数据项表';
+
+
+
+
 
 
 
@@ -357,51 +398,9 @@ CREATE TABLE `t_subject_item` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='专题Item表';
 
 
-/*Table structure for table `t_sys_dict_data` */
 
-DROP TABLE IF EXISTS `t_sys_dict_data`;
 
-CREATE TABLE `t_sys_dict_data` (
-                                   `uid` varchar(32) NOT NULL COMMENT '主键',
-                                   `oid` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增键oid',
-                                   `dict_type_uid` varchar(255) DEFAULT NULL COMMENT '字典类型UID',
-                                   `dict_label` varchar(255) DEFAULT NULL COMMENT '字典标签',
-                                   `dict_value` varchar(255) DEFAULT NULL COMMENT '字典键值',
-                                   `css_class` varchar(255) DEFAULT NULL COMMENT '样式属性（其他样式扩展）',
-                                   `list_class` varchar(255) DEFAULT NULL COMMENT '表格回显样式',
-                                   `is_default` tinyint(1) DEFAULT '0' COMMENT '是否默认（1是 0否）,默认为0',
-                                   `create_by_uid` varchar(32) DEFAULT NULL COMMENT '创建人UID',
-                                   `update_by_uid` varchar(32) DEFAULT NULL COMMENT '最后更新人UID',
-                                   `remark` varchar(255) DEFAULT NULL COMMENT '备注',
-                                   `status` tinyint(1) DEFAULT '1' COMMENT '状态',
-                                   `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '创建时间',
-                                   `update_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '更新时间',
-                                   `is_publish` varchar(1) NOT NULL DEFAULT '1' COMMENT '是否发布(1:是，0:否)',
-                                   `sort` int(11) NOT NULL DEFAULT '0' COMMENT '排序字段',
-                                   PRIMARY KEY (`uid`),
-                                   KEY `oid` (`oid`)
-) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8 COMMENT='字典数据表';
 
-/*Table structure for table `t_sys_dict_type` */
-
-DROP TABLE IF EXISTS `t_sys_dict_type`;
-
-CREATE TABLE `t_sys_dict_type` (
-                                   `uid` varchar(32) NOT NULL COMMENT '主键',
-                                   `oid` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增键oid',
-                                   `dict_name` varchar(255) DEFAULT NULL COMMENT '字典名称',
-                                   `dict_type` varchar(255) DEFAULT NULL COMMENT '字典类型',
-                                   `create_by_uid` varchar(32) NOT NULL COMMENT '创建人UID',
-                                   `update_by_uid` varchar(32) NOT NULL COMMENT '最后更新人UID',
-                                   `remark` varchar(255) DEFAULT NULL COMMENT '备注',
-                                   `status` tinyint(1) DEFAULT '1' COMMENT '状态',
-                                   `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '创建时间',
-                                   `update_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '更新时间',
-                                   `is_publish` varchar(1) NOT NULL DEFAULT '1' COMMENT '是否发布(1:是，0:否)',
-                                   `sort` int(11) NOT NULL DEFAULT '0' COMMENT '排序字段',
-                                   PRIMARY KEY (`uid`),
-                                   KEY `oid` (`oid`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8 COMMENT='字典类型表';
 
 /*Table structure for table `t_sys_log` */
 

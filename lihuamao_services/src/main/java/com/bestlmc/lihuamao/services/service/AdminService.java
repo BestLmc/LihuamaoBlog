@@ -1,7 +1,8 @@
 package com.bestlmc.lihuamao.services.service;
 
 import com.bestlmc.lihuamao.base.service.SuperService;
-import com.bestlmc.lihuamao.commons.been.TAdmin;
+import com.bestlmc.lihuamao.commons.been.Admin;
+import com.bestlmc.lihuamao.commons.http.CommonResult;
 import com.bestlmc.lihuamao.services.vo.AdminVO;
 
 /**
@@ -9,10 +10,13 @@ import com.bestlmc.lihuamao.services.vo.AdminVO;
  * @Author bestlmc
  * @Date 2021/6/22 13:18
  */
-public interface AdminService extends SuperService<TAdmin> {
+public interface AdminService extends SuperService<Admin> {
 
-    public String addAdmin(AdminVO adminVO);
+    public CommonResult addAdmin(AdminVO adminVO);
 
+    public CommonResult updateAdmin(AdminVO adminVO);
 
-    public AdminVO getAdminById(String uid);
+    public CommonResult getAdminById(String uid);
+
+    public CommonResult deleteAdmin(AdminVO adminVO);
 }
