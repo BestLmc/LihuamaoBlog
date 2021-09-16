@@ -1,0 +1,8 @@
+com\bestlmc\lihuamao\base\vo\BaseVO.class
+com\bestlmc\lihuamao\base\service\SuperService.class
+com\bestlmc\lihuamao\base\ServiceImpl\SuperServiceImpl.class
+com\bestlmc\lihuamao\base\enums\SysStatus.class
+com\bestlmc\lihuamao\base\vo\PageInfo.class
+com\bestlmc\lihuamao\base\entity\BaseEntity.class
+com\bestlmc\lihuamao\base\enums\HttpCon.class
+com\bestlmc\lihuamao\base\mapper\SuperMapper.class

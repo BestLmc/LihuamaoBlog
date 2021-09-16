@@ -1,0 +1,10 @@
+com\bestlmc\lihuamao\services\service\MenuService.class
+com\bestlmc\lihuamao\services\mapper\AdminMapper.class
+com\bestlmc\lihuamao\services\service\AdminService.class
+com\bestlmc\lihuamao\services\mapper\MenuMapper.class
+com\bestlmc\lihuamao\services\service\impl\MenuServiceImpl.class
+com\bestlmc\lihuamao\services\service\RoleService.class
+com\bestlmc\lihuamao\services\service\impl\RoleServiceImpl.class
+com\bestlmc\lihuamao\services\vo\AdminVO.class
+com\bestlmc\lihuamao\services\mapper\RoleMapper.class
+com\bestlmc\lihuamao\services\service\impl\AdminServiceImpl.class

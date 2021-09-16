@@ -1,1 +1,13 @@
+## class ##
+/target/
+/temp/
+
+## Vue ##
 node_modules
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+*.iml

@@ -1,0 +1,6 @@
+com\bestlmc\lihuamao\commons\been\TMenu.class
+com\bestlmc\lihuamao\commons\been\TRole.class
+com\bestlmc\lihuamao\commons\config\MetaObjectHandlerConfig.class
+com\bestlmc\lihuamao\commons\config\MybatisPlusConfig.class
+com\bestlmc\lihuamao\commons\been\TAdmin.class
+com\bestlmc\lihuamao\commons\http\CommonResult.class
