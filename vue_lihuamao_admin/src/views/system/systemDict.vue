@@ -337,6 +337,7 @@ export default {
     // },
     handleList: function (row) {
       var uid = row.uid;
+      console.log("uid： " + uid);
       this.$router.push({
         path: "systemDictItem",
         query: { dictUid: uid },

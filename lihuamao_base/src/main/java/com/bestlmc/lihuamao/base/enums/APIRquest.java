@@ -12,8 +12,5 @@ public class APIRquest {
     // 请求失败
     public final static Integer REQUEST_FAILED = 400;
 
-    // 结果成功
-//    public final static Integer RESULT_SUCCESS = 1;
-    // 结果失败
-//    public final static Integer RESULT_FAILED = 0;
+
 }

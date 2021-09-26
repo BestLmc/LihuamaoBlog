@@ -1,51 +1,182 @@
 <template>
-  <div class="maincontainer">
+  <div class="app-container">
     <!-- 查询和其他操作 -->
     <div class="filter-container" style="margin: 10px 0 10px 0">
-      <el-input
-        clearable
-        class="filter-item"
-        style="width: 200px"
-        v-model="keyword"
-        placeholder="请输入菜单名"
-      ></el-input>
-      <el-button
-        class="filter-item"
-        type="primary"
-        icon="el-icon-search"
-        @click="handleFind"
-        >查找</el-button
-      >
       <el-button
         class="filter-item"
         type="primary"
         @click="handleAdd"
         icon="el-icon-edit"
-        >添加</el-button
+        >添加菜单</el-button
       >
     </div>
 
-    <el-table :data="tableData" border style="width: 100%">
+    <el-table :data="tableData" style="width: 100%">
+      <el-table-column type="expand">
+        <template slot-scope="scope">
+          <el-form label-position="left" inline class="demo-table-expand">
+            <el-table
+              :data="scope.row.childMenuList"
+              :show-header="showHeader"
+              style="width: 100%"
+            >
+              <el-table-column label width="60" align="center">
+                <template slot-scope="scope_child">
+                  <span>{{ scope_child.$index + 1 }}</span>
+                </template>
+              </el-table-column>
+
+              <el-table-column label width="150" align="center">
+                <template slot-scope="scope_child">
+                  <span>{{ scope_child.row.menuName }}</span>
+                </template>
+              </el-table-column>
+
+              <el-table-column label width="100" align="center">
+                <template slot-scope="scope_child">
+                  <el-tag
+                    v-for="item in menuLevelDictList"
+                    :key="item.uid"
+                    v-if="scope_child.row.menuLevel == item.itemValue"
+                    :type="item.listClass"
+                    >{{ item.itemLabel }}</el-tag
+                  >
+                </template>
+              </el-table-column>
+
+              <el-table-column label width="200" align="center">
+                <template slot-scope="scope_child">
+                  <span>{{ scope_child.row.introduce }}</span>
+                </template>
+              </el-table-column>
+
+              <el-table-column label width="100" align="center">
+                <template slot-scope="scope_child">
+                  <!--                  <span>{{ scope_child.row.icon }}</span>-->
+                  <i :class="scope_child.row.icon" />
+                </template>
+              </el-table-column>
+
+              <el-table-column label width="200" align="center">
+                <template slot-scope="scope_child">
+                  <span>{{ scope_child.row.url }}</span>
+                </template>
+              </el-table-column>
+
+              <el-table-column label width="160" align="center">
+                <template slot-scope="scope_child">
+                  <span>{{ scope_child.row.createTime }}</span>
+                </template>
+              </el-table-column>
+
+              <el-table-column label width="100" align="center">
+                <template slot-scope="scope_child">
+                  <template v-if="scope_child.row.status == 1">
+                    <span>正常</span>
+                  </template>
+                  <template v-if="scope_child.row.status == 2">
+                    <span>推荐</span>
+                  </template>
+                  <template v-if="scope_child.row.status == 0">
+                    <span>已删除</span>
+                  </template>
+                </template>
+              </el-table-column>
+
+              <el-table-column fixed="right" min-width="230">
+                <template slot-scope="scope_child">
+                  <el-button
+                    @click="handleStick(scope_child.row)"
+                    type="warning"
+                    size="small"
+                    >置顶</el-button
+                  >
+                  <el-button
+                    @click="handleEdit(scope_child.row)"
+                    type="primary"
+                    size="small"
+                    >编辑</el-button
+                  >
+                  <el-button
+                    @click="handleDelete(scope_child.row)"
+                    type="danger"
+                    size="small"
+                    >删除</el-button
+                  >
+                </template>
+              </el-table-column>
+            </el-table>
+          </el-form>
+        </template>
+      </el-table-column>
+
       <el-table-column label="序号" width="60" align="center">
         <template slot-scope="scope">
           <span>{{ scope.$index + 1 }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="name" label="菜单名称" width="120">
-      </el-table-column>
-      <el-table-column prop="menuLevel" label="菜单级别" width="120">
-      </el-table-column>
-      <el-table-column prop="introduce" label="简介" width="120">
-      </el-table-column>
-      <el-table-column prop="parentUid" label="父uid" width="180">
-      </el-table-column>
-      <el-table-column prop="menuType" label="菜单类型" width="180">
+
+      <el-table-column label="菜单名称" width="150" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.menuName }}</span>
+        </template>
       </el-table-column>
 
-      <el-table-column label="操作" fixed="right" min-width="250">
+      <el-table-column label="菜单级别" width="100" align="center">
         <template slot-scope="scope">
-          <el-button @click="handRest(scope.row)" type="warning" size="small"
-            >重置密码</el-button
+          <el-tag
+            v-for="item in menuLevelDictList"
+            :key="item.uid"
+            v-if="scope.row.menuLevel == item.itemValue"
+            :type="item.listClass"
+            >{{ item.itemLabel }}</el-tag
+          >
+        </template>
+      </el-table-column>
+
+      <el-table-column label="菜单简介" width="200" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.introduce }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column label="图标" width="100" align="center">
+        <template slot-scope="scope">
+          <i :class="scope.row.icon" />
+          <!--          <span>{{ scope.row.icon }}</span>-->
+        </template>
+      </el-table-column>
+
+      <el-table-column label="路由" width="200" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.url }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column label="创建时间" width="160" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.createTime }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column label="状态" width="100" align="center">
+        <template slot-scope="scope">
+          <template v-if="scope.row.status == 1">
+            <span>正常</span>
+          </template>
+          <template v-if="scope.row.status == 2">
+            <span>推荐</span>
+          </template>
+          <template v-if="scope.row.status == 0">
+            <span>已删除</span>
+          </template>
+        </template>
+      </el-table-column>
+
+      <el-table-column label="操作" fixed="right" min-width="230">
+        <template slot-scope="scope">
+          <el-button @click="handleStick(scope.row)" type="warning" size="small"
+            >置顶</el-button
           >
           <el-button @click="handleEdit(scope.row)" type="primary" size="small"
             >编辑</el-button
@@ -56,6 +187,7 @@
         </template>
       </el-table-column>
     </el-table>
+
     <!--分页-->
     <div class="block">
       <el-pagination
@@ -73,9 +205,9 @@
         <el-form-item
           label="菜单名称"
           :label-width="formLabelWidth"
-          prop="name"
+          prop="menuName"
         >
-          <el-input v-model="form.name" auto-complete="off"></el-input>
+          <el-input v-model="form.menuName" auto-complete="off"></el-input>
         </el-form-item>
 
         <el-form-item
@@ -84,13 +216,13 @@
           prop="menuLevel"
         >
           <el-select v-model="form.menuLevel" placeholder="请选择">
-            <!-- <el-option
+            <el-option
               v-for="item in menuLevelDictList"
               :key="item.uid"
-              :label="item.dictLabel"
-              v-if="item.dictValue != 3"
-              :value="parseInt(item.dictValue)"
-            ></el-option> -->
+              :label="item.itemLabel"
+              v-if="item.itemValue != 3"
+              :value="parseInt(item.itemValue)"
+            ></el-option>
           </el-select>
         </el-form-item>
 
@@ -113,7 +245,7 @@
             <el-option
               v-for="item in menuOptions"
               :key="item.uid"
-              :label="item.name"
+              :label="item.menuName"
               :value="item.uid"
             ></el-option>
           </el-select>
@@ -122,9 +254,9 @@
         <el-form-item
           label="菜单介绍"
           :label-width="formLabelWidth"
-          prop="summary"
+          prop="introduce"
         >
-          <el-input v-model="form.summary" auto-complete="off"></el-input>
+          <el-input v-model="form.introduce" auto-complete="off"></el-input>
         </el-form-item>
 
         <el-form-item label="图标" :label-width="formLabelWidth" prop="icon">
@@ -142,169 +274,287 @@
         <el-form-item label="路由" :label-width="formLabelWidth" prop="url">
           <el-input v-model="form.url" auto-complete="off"></el-input>
         </el-form-item>
-
-        <el-form-item
-          label="是否显示"
-          :label-width="formLabelWidth"
-          prop="isShow"
-        >
-          <el-radio-group v-model="form.isShow" size="small">
-            <el-radio
-              v-for="item in yesNoDictList"
-              :key="item.uid"
-              :label="parseInt(item.dictValue)"
-              border
-              >{{ item.dictLabel }}</el-radio
-            >
-          </el-radio-group>
-        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
         <el-button type="primary" @click="submitForm">确 定</el-button>
       </div>
     </el-dialog>
+
+    <icons-dialog
+      :visible.sync="iconsVisible"
+      :current="form.icon"
+      @select="setIcon"
+    />
   </div>
 </template>
-
 
 <script>
 import {
   getMenuPageList,
+  getExpandPageList,
   addMenu,
+  updateMenu,
   deleteMenu,
   getMenu,
 } from "@/api/authority/menu";
+import { getSysDictItemList } from "@/api/system/sysdictitem";
+import IconsDialog from "../../components/IconsDialog";
 export default {
-  created() {
-    this.initData();
+  components: {
+    IconsDialog,
   },
   data() {
     return {
+      iconsVisible: false, // 是否显示icon选择器
+      activeData: "", // 激活的图标
+      showHeader: false, //是否显示表头
+      tableData: [],
       keyword: "",
+      menuLevel: "",
       currentPage: 1,
       pageSize: 10,
       total: 0, //总数量
-      params: { keyword: "", currentPage: 1, pageSize: 10 },
-      tableData: [],
+      title: "增加菜单",
       dialogFormVisible: false, //控制弹出框
-      form: {},
       formLabelWidth: "120px",
-      title: "增加管理员",
-      icon: true, //控制删除图标的显示
-
+      isEditForm: false,
+      menuLevelDictList: [], //菜单等级字典
+      yesNoDictList: [], // 是否字典
+      yesNoDefault: null,
+      itemModel: {
+        dictCode: null,
+      },
+      form: {
+        uid: null,
+        menuName: "",
+        introduce: "",
+        icon: "",
+        url: "",
+        sort: "",
+        currentPage: 1,
+        pageSize: 10,
+        total: 0,
+      },
+      loading: false,
+      menuOptions: [], //一级菜单候选项
       rules: {
-        userName: [
-          { required: true, message: "用户名不能为空", trigger: "blur" },
+        menuName: [
+          { required: true, message: "菜单名称不能为空", trigger: "blur" },
           { min: 1, max: 20, message: "长度在1到20个字符" },
         ],
+        menuLevel: [
+          { required: true, message: "菜单等级不能为空", trigger: "blur" },
+        ],
+        parentUid: [
+          { required: true, message: "父菜单名不能为空", trigger: "blur" },
+        ],
+        introduce: [
+          { required: true, message: "菜单简介不能为空", trigger: "blur" },
+        ],
+        icon: [{ required: true, message: "图标不能为空", trigger: "blur" }],
+        url: [{ required: true, message: "路由不能为空", trigger: "blur" }],
       },
     };
   },
+  created() {
+    this.getDictList();
+    this.menuList();
+  },
   methods: {
-    initData() {
-      getMenuPageList(this.params).then((res) => {
-        console.log(res);
-        // console.log(res.data.code);
-        let tableData = res.data.records;
-        this.total = res.data.total;
-        this.tableData = tableData;
+    menuList: function () {
+      this.form.currentPage = this.currentPage;
+      this.form.pageSize = this.pageSize;
+      this.form.total = this.total;
+      getExpandPageList(this.form).then((response) => {
+        console.log("getAllMenu", response);
+        if (response.code == 200) {
+          this.tableData = response.data.records;
+          this.menuOptions = response.data.records;
+        }
       });
     },
-    handleClick(row) {
-      console.log(row);
+    // 选择图标
+    setIcon(val) {
+      this.form.icon = val;
+    },
+    openIconsDialog(model) {
+      this.iconsVisible = true;
+      this.currentIconModel = model;
+    },
+    /**
+     * 字典查询
+     */
+    getDictList: function () {
+      this.itemModel.dictCode = "menu_level";
+      getSysDictItemList(this.itemModel).then((response) => {
+        if (response.code == 200) {
+          console.log(response.data);
+          this.menuLevelDictList = response.data;
+        }
+      });
+    },
+    handleCurrentChange: function (val) {
+      this.currentPage = val;
+      this.menuList();
+    },
+    getFormObject: function () {
+      var formObject = {
+        uid: null,
+        menuName: "",
+        introduce: "",
+        icon: "",
+        url: "",
+        sort: "",
+        menuType: 0, //菜单类型  菜单
+        currentPage: 1,
+        pageSize: 10,
+        total: 0,
+      };
+      return formObject;
     },
     handleFind: function () {
-      this.initData();
+      this.menuList();
     },
     handleAdd: function () {
+      this.title = "增加菜单";
       this.dialogFormVisible = true;
+      this.form = this.getFormObject();
+      this.isEditForm = false;
     },
-    // handRest: function (row) {
-    //   var that = this;
-    //   this.$confirm("此操作将会将该用户密码重置为默认密码, 是否继续?", "提示", {
-    //     confirmButtonText: "确定",
-    //     cancelButtonText: "取消",
-    //     type: "warning",
-    //   })
-    //     .then(() => {
-    //       let params = {};
-    //       params.uid = row.uid;
-    //     })
-    //     .catch(() => {
-    //       this.$commonUtil.message.info("已取消删除");
-    //     });
-    // },
-    // handleEdit: function (row) {
-    //   this.dialogFormVisible = true;
-    //   getAdmin(row.uid)
-    //     .then((res) => {
-    //       console.log(res);
-    //       if (res.code == 200) {
-    //         this.form = res.data;
-    //       }
-    //     })
-    //     .catch(() => {
-    //       this.$message.error("查询出错！");
-    //     });
-    // },
-    // handleDelete: function (row) {
-    //   this.$confirm("此操作将该管理员删除, 是否继续?", "提示", {
-    //     confirmButtonText: "确定",
-    //     cancelButtonText: "取消",
-    //     type: "warning",
-    //   })
-    //     .then((res) => {
-    //       console.log(res);
-    //       console.log(row);
-    //       //   let params = new URLSearchParams();
-    //       //   adminUids.push(row.uid);
-    //       //   params.append("uid", row.uid);
-    //       console.log(row.uid);
-    //       deleteAdmin(row.uid).then((res) => {
-    //         console.log(res);
-    //         if (res.code == 200) {
-    //           this.$message({
-    //             type: "success",
-    //             message: "删除成功!",
-    //           });
-    //           this.initData();
-    //         }
-    //       });
-    //     })
-    //     .catch(() => {
-    //       this.$commonUtil.message.info("已取消删除");
-    //     });
-    // },
-    // handleCurrentChange: function (val) {
-    //   this.currentPage = val;
-    //   this.initData();
-    // },
-    // submitForm: function () {
-    //   this.$refs.form.validate((valid) => {
-    //     if (!valid) {
-    //       console.log("校验出错");
-    //     } else {
-    //       console.log(this.form.nickName);
-    //       console.log(this.form);
-    //       addAdmin(this.form).then((response) => {
-    //         if (response.code == 200) {
-    //           this.$message({
-    //             message: response.message,
-    //             type: "success",
-    //           });
-    //           this.dialogFormVisible = false;
-    //           this.initData();
-    //         } else {
-    //           this.$commonUtil.message.error(response.message);
-    //         }
-    //       });
-    //     }
-    //   });
-    // },
+    handleEdit: function (row) {
+      this.dialogFormVisible = true;
+      this.isEditForm = true;
+      var parentUid = row.parentUid;
+      this.title = "编辑菜单";
+      this.form = row;
+    },
+    handleStick: function (row) {
+      this.$confirm("此操作将会把该标签放到首位, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          let params = {};
+          params.uid = row.uid;
+          stickMenu(params).then((response) => {
+            if (response.code == "success") {
+              this.menuList();
+              this.$message({
+                type: "success",
+                message: response.data.message,
+              });
+            } else {
+              this.$message({
+                type: "error",
+                message: response.data.message,
+              });
+            }
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消置顶",
+          });
+        });
+    },
+    handleDelete: function (row) {
+      var that = this;
+      this.$confirm("此操作将把菜单删除, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          let params = {};
+          params.uid = row.uid;
+          deleteMenu(params).then((response) => {
+            if (response.code == 200) {
+              this.$message({
+                type: "success",
+                message: response.data.message,
+              });
+            } else {
+              this.$message({
+                type: "error",
+                message: response.data.message,
+              });
+            }
+            that.menuList();
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
+    },
+    //菜单远程搜索函数
+    remoteMethod: function (query) {
+      if (query !== "") {
+        //这里只搜索一级菜单出来
+        var params = new URLSearchParams();
+        params.append("keyword", query);
+        params.append("menuLevel", 1);
+        params.append("pageSize", 100);
+        getMenuList(params).then((response) => {
+          console.log(response);
+          if (response.code == "success") {
+            this.menuOptions = response.data.data.records;
+          }
+        });
+      } else {
+        this.menuOptions = [];
+      }
+    },
+
+    submitForm: function () {
+      this.$refs.form.validate((valid) => {
+        if (!valid) {
+          console.log("校验失败");
+        } else {
+          if (this.isEditForm) {
+            updateMenu(this.form).then((response) => {
+              console.log(response);
+              if (response.code == 200) {
+                this.$message({
+                  type: "success",
+                  message: response.data.message,
+                });
+                this.dialogFormVisible = false;
+                this.menuList();
+              } else {
+                this.$message({
+                  type: "success",
+                  message: response.data.message,
+                });
+              }
+            });
+          } else {
+            console.log(this.form);
+            addMenu(this.form).then((response) => {
+              console.log(response);
+              if (response.code == 200) {
+                this.$message({
+                  type: "success",
+                  message: response.data.message,
+                });
+                this.dialogFormVisible = false;
+                this.menuList();
+              } else {
+                this.$message({
+                  type: "error",
+                  message: response.data.message,
+                });
+              }
+            });
+          }
+        }
+      });
+    },
   },
 };
 </script>
-
-<style>
-</style>

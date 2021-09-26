@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
  * @Date 2021/6/20 23:51
  */
 @Configuration
-@MapperScan("com.bestlmc.lihuamao.services.mapper")//这个注解，作用相当于下面的@Bean MapperScannerConfigurer，2者配置1份即可
+@MapperScan("com.bestlmc.lihuamao.biz.mapper")//这个注解，作用相当于下面的@Bean MapperScannerConfigurer，2者配置1份即可
 public class MybatisPlusConfig {
 
 

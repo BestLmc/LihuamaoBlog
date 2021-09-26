@@ -1,11 +1,7 @@
 <template>
   <div class="app-container">
     <!-- 查询和其他操作 -->
-    <div
-      class="filter-container"
-      style="margin: 10px 0 10px 0"
-      v-permission="'/sysDictData/getList'"
-    >
+    <div class="filter-container" style="margin: 10px 0 10px 0">
       <el-select
         v-model="dictUid"
         placeholder="请选择字典名称"
@@ -33,7 +29,6 @@
         type="primary"
         icon="el-icon-search"
         @click="handleFind"
-        v-permission="'/sysDictData/getList'"
         >查找</el-button
       >
       <el-button
@@ -41,7 +36,6 @@
         type="primary"
         @click="handleAdd"
         icon="el-icon-edit"
-        v-permission="'/sysDictData/add'"
         >添加</el-button
       >
       <el-button
@@ -49,7 +43,6 @@
         type="danger"
         @click="handleDeleteBatch"
         icon="el-icon-delete"
-        v-permission="'/sysDictData/deleteBatch'"
         >删除选中</el-button
       >
     </div>
@@ -133,18 +126,10 @@
 
       <el-table-column label="操作" fixed="right" min-width="240">
         <template slot-scope="scope">
-          <el-button
-            @click="handleEdit(scope.row)"
-            type="primary"
-            size="small"
-            v-permission="'/sysDictData/edit'"
+          <el-button @click="handleEdit(scope.row)" type="primary" size="small"
             >编辑</el-button
           >
-          <el-button
-            @click="handleDelete(scope.row)"
-            type="danger"
-            size="small"
-            v-permission="'/sysDictData/deleteBatch'"
+          <el-button @click="handleDelete(scope.row)" type="danger" size="small"
             >删除</el-button
           >
         </template>
@@ -195,7 +180,7 @@
             <el-option
               v-for="item in dictTypeList"
               :key="item.uid"
-              :label="item.dictType"
+              :label="item.dictName"
               :value="item.uid"
             ></el-option>
           </el-select>
@@ -307,7 +292,7 @@ export default {
       params.currentPage = 0;
       params.pageSize = 100;
       getSysDictPageList(params).then((response) => {
-        if (response.code == "success") {
+        if (response.code == 200) {
           this.dictTypeList = response.data.records;
         }
       });

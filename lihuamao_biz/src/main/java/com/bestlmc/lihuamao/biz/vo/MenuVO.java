@@ -1,25 +1,15 @@
-package com.bestlmc.lihuamao.commons.been;
+package com.bestlmc.lihuamao.biz.vo;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.bestlmc.lihuamao.base.entity.BaseEntity;
+import com.bestlmc.lihuamao.base.vo.BaseVO;
 import lombok.Data;
 
-import java.util.List;
-
 /**
- * <p>
- * 菜单表
- * </p>
- *
- * @author jobob
- * @since 2021-06-20
+ * @Description: 菜单实体类
+ * @Author bestlmc
+ * @Date 2021/6/24 14:50
  */
 @Data
-@TableName("t_menu")
-public class Menu extends BaseEntity {
-
-
+public class MenuVO extends BaseVO<MenuVO> {
     /**
      * 菜单名称
      */
@@ -59,11 +49,5 @@ public class Menu extends BaseEntity {
      * 菜单类型 0: 菜单   1: 按钮
      */
     private Integer menuType;
-
-    /**
-     * 子菜单
-     */
-    @TableField(exist = false)
-    private List<Menu> childMenuList;
 
 }

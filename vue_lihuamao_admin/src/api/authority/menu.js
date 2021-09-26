@@ -13,6 +13,29 @@ export function getMenuPageList(params) {
 }
 
 /**
+ * 获取菜单父子表列表
+ * @param params
+ */
+export function getExpandPageList(params) {
+    return request({
+        url: process.env.ADMIN_API + '/menu/getExpandPageList',
+        method: 'post',
+        data: params
+    })
+}
+
+/**
+ * 获取所有菜单列表
+ * @param params
+ */
+export function getAllMenu() {
+    return request({
+        url: process.env.ADMIN_API + '/menu/getAllMenu',
+        method: 'post',
+    })
+}
+
+/**
  * 创建菜单
  * @param params
  */
@@ -40,10 +63,11 @@ export function updateMenu(params) {
  * 删除菜单
  * @param params
  */
-export function deleteMenu(uid) {
+export function deleteMenu(params) {
     return request({
-        url: process.env.ADMIN_API + '/menu/delete?uid=' + uid,
-        method: 'get'
+        url: process.env.ADMIN_API + '/menu/delete',
+        method: 'post',
+        data: params
     })
 }
 

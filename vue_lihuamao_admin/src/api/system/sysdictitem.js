@@ -1,12 +1,24 @@
 import request from '@/utils/request'
 
 /**
- * 获取数据字典项列表
+ * 获取数据字典项分页列表
  * @param params
  */
 export function getSysDictItemPageList(params) {
     return request({
         url: process.env.ADMIN_API + '/sysdictitem/getPageList',
+        method: 'post',
+        data: params
+    })
+}
+
+/**
+ * 获取数据字典项列表
+ * @param params
+ */
+export function getSysDictItemList(params) {
+    return request({
+        url: process.env.ADMIN_API + '/sysdictitem/getList',
         method: 'post',
         data: params
     })

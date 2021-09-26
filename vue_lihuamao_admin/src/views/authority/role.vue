@@ -1,5 +1,5 @@
 <template>
-  <div class="maincontainer">
+  <div class="app-container">
     <!-- 查询和其他操作 -->
     <div class="filter-container" style="margin: 10px 0 10px 0">
       <el-input
@@ -7,7 +7,7 @@
         class="filter-item"
         style="width: 200px"
         v-model="keyword"
-        placeholder="请输入角色名"
+        placeholder="请输入角色名称"
       ></el-input>
       <el-button
         class="filter-item"
@@ -21,28 +21,52 @@
         type="primary"
         @click="handleAdd"
         icon="el-icon-edit"
-        >添加</el-button
+        >添加角色</el-button
       >
     </div>
 
-    <el-table :data="tableData" border style="width: 100%">
+    <el-table :data="tableData" style="width: 100%">
+      <el-table-column type="selection"></el-table-column>
       <el-table-column label="序号" width="60" align="center">
         <template slot-scope="scope">
           <span>{{ scope.$index + 1 }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="roleName" label="角色名" width="120">
-      </el-table-column>
-      <el-table-column prop="introduce" label="角色介绍" width="120">
-      </el-table-column>
-      <el-table-column prop="menuUids" label="角色管辖的菜单的UID" width="120">
+
+      <el-table-column label="角色名称" width="150" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.roleName }}</span>
+        </template>
       </el-table-column>
 
-      <el-table-column label="操作" fixed="right" min-width="250">
+      <el-table-column label="角色介绍" width="300" align="center">
         <template slot-scope="scope">
-          <el-button @click="handRest(scope.row)" type="warning" size="small"
-            >重置密码</el-button
-          >
+          <span>{{ scope.row.introduce }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column label="创建时间" width="160" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.createTime }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column label="状态" width="100" align="center">
+        <template slot-scope="scope">
+          <template v-if="scope.row.status == 1">
+            <span>正常</span>
+          </template>
+          <template v-if="scope.row.status == 2">
+            <span>推荐</span>
+          </template>
+          <template v-if="scope.row.status == 0">
+            <span>已删除</span>
+          </template>
+        </template>
+      </el-table-column>
+
+      <el-table-column label="操作" fixed="right" min-width="150">
+        <template slot-scope="scope">
           <el-button @click="handleEdit(scope.row)" type="primary" size="small"
             >编辑</el-button
           >
@@ -52,6 +76,7 @@
         </template>
       </el-table-column>
     </el-table>
+
     <!--分页-->
     <div class="block">
       <el-pagination
@@ -66,133 +91,28 @@
     <!-- 添加或修改对话框 -->
     <el-dialog :title="title" :visible.sync="dialogFormVisible">
       <el-form :model="form" :rules="rules" ref="form">
-        <el-row :gutter="24">
-          <el-col :span="10">
-            <el-form-item
-              label="用户名"
-              :label-width="formLabelWidth"
-              prop="userName"
-            >
-              <el-input
-                v-model="form.userName"
-                placeholder="请输入用户名"
-              ></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
+        <el-form-item
+          label="角色名称"
+          :label-width="formLabelWidth"
+          prop="roleName"
+        >
+          <el-input v-model="form.roleName" auto-complete="off"></el-input>
+        </el-form-item>
 
-        <el-row :gutter="24">
-          <el-col :span="10">
-            <el-form-item
-              label="昵称"
-              :label-width="formLabelWidth"
-              prop="nickName"
-            >
-              <el-input
-                v-model="form.nickName"
-                placeholder="请输入昵称"
-              ></el-input> </el-form-item
-          ></el-col>
-        </el-row>
-        <el-row :gutter="24">
-          <el-col :span="10">
-            <el-form-item
-              label="密码"
-              :label-width="formLabelWidth"
-              prop="password"
-            >
-              <el-input
-                placeholder="请输入密码"
-                v-model="form.passWord"
-                show-password
-              ></el-input>
-            </el-form-item>
-          </el-col> </el-row
-        ><el-row :gutter="24">
-          <el-col :span="10">
-            <el-form-item
-              label="确认密码"
-              :label-width="formLabelWidth"
-              prop="comfirmPassword"
-            >
-              <el-input
-                placeholder="请重新输入密码"
-                v-model="form.comfirmPassword"
-                show-password
-              ></el-input>
-            </el-form-item>
-          </el-col> </el-row
-        ><el-row :gutter="24">
-          <el-col :span="10">
-            <el-form-item
-              label="性别"
-              :label-width="formLabelWidth"
-              prop="gender"
-            >
-              <el-radio v-model="form.gender" label="1">男</el-radio>
-              <el-radio v-model="form.gender" label="2">女</el-radio>
-            </el-form-item>
-          </el-col> </el-row
-        ><el-row :gutter="24">
-          <el-col :span="10">
-            <el-form-item
-              label="邮箱"
-              :label-width="formLabelWidth"
-              prop="email"
-            >
-              <el-input
-                v-model="form.email"
-                placeholder="请输入邮箱"
-              ></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="24">
-          <el-col :span="10">
-            <el-form-item
-              label="出生日期"
-              :label-width="formLabelWidth"
-              prop="birthday"
-            >
-              <el-date-picker
-                v-model="form.birthday"
-                value-format="yyyy-MM-dd HH:mm:ss"
-                type="datetime"
-                placeholder="选择日期"
-              >
-              </el-date-picker>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="24">
-          <el-col :span="10">
-            <el-form-item
-              label="手机号"
-              :label-width="formLabelWidth"
-              prop="mobile"
-            >
-              <el-input
-                v-model="form.mobile"
-                placeholder="请输入手机号"
-              ></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="24">
-          <el-col :span="120">
-            <el-form-item
-              label="自我介绍"
-              :label-width="formLabelWidth"
-              prop="introduce"
-            >
-              <el-input
-                type="textarea"
-                v-model="form.introduce"
-                placeholder="请输入自我介绍"
-              ></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
+        <el-form-item label="角色介绍" :label-width="formLabelWidth">
+          <el-input v-model="form.introduce" auto-complete="off"></el-input>
+        </el-form-item>
+
+        <el-form-item label="访问菜单" :label-width="formLabelWidth">
+          <el-tree
+            ref="tree"
+            :data="menuList"
+            show-checkbox
+            node-key="uid"
+            :props="defaultProps"
+            :default-checked-keys="form.menuUids"
+          ></el-tree>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -202,144 +122,218 @@
   </div>
 </template>
 
-
 <script>
 import {
   getRolePageList,
   addRole,
+  updateRole,
   deleteRole,
   getRole,
 } from "@/api/authority/role";
+
+import { getAllMenu } from "@/api/authority/menu";
+
 export default {
-  created() {
-    this.initData();
-  },
   data() {
     return {
+      tableData: [],
       keyword: "",
       currentPage: 1,
       pageSize: 10,
       total: 0, //总数量
-      params: { keyword: "", currentPage: 1, pageSize: 10 },
-      tableData: [],
+      title: "增加角色",
       dialogFormVisible: false, //控制弹出框
-      form: {},
       formLabelWidth: "120px",
-      title: "增加管理员",
-      icon: true, //控制删除图标的显示
-
+      isEditForm: false,
+      form: {
+        uid: null,
+        roleName: "",
+        introduce: "",
+        menuUids: [],
+      },
+      //分类菜单列表
+      menuList: [],
+      // tree配置项
+      defaultProps: {
+        children: "childMenuList",
+        label: "menuName",
+      },
       rules: {
-        userName: [
-          { required: true, message: "用户名不能为空", trigger: "blur" },
+        roleName: [
+          { required: true, message: "角色名称不能为空", trigger: "blur" },
           { min: 1, max: 20, message: "长度在1到20个字符" },
         ],
       },
     };
   },
+  created() {
+    this.allMenuList();
+    this.roleList();
+  },
+  watch: {
+    form: {
+      handler(newVal, oldVal) {
+        console.log("value changed ", newVal, oldVal);
+      },
+      deep: true,
+    },
+  },
   methods: {
-    initData() {
-      getRolePageList(this.params).then((res) => {
-        console.log(res);
-        // console.log(res.data.code);
-        let tableData = res.data.records;
-        this.total = res.data.total;
-        this.tableData = tableData;
+    allMenuList: function () {
+      getAllMenu().then((response) => {
+        console.log(response);
+        if (response.code == 200) {
+          let data = response.data;
+          this.menuList = response.data;
+          console.log("得到的全部菜单", this.menuList);
+        }
       });
     },
-    // handleClick(row) {
-    //   console.log(row);
-    // },
-    // handleFind: function () {
-    //   this.initData();
-    // },
-    // handleAdd: function () {
-    //   this.dialogFormVisible = true;
-    // },
-    // handRest: function (row) {
-    //   var that = this;
-    //   this.$confirm("此操作将会将该用户密码重置为默认密码, 是否继续?", "提示", {
-    //     confirmButtonText: "确定",
-    //     cancelButtonText: "取消",
-    //     type: "warning",
-    //   })
-    //     .then(() => {
-    //       let params = {};
-    //       params.uid = row.uid;
-    //     })
-    //     .catch(() => {
-    //       this.$commonUtil.message.info("已取消删除");
-    //     });
-    // },
-    // handleEdit: function (row) {
-    //   this.dialogFormVisible = true;
-    //   getAdmin(row.uid)
-    //     .then((res) => {
-    //       console.log(res);
-    //       if (res.code == 200) {
-    //         this.form = res.data;
-    //       }
-    //     })
-    //     .catch(() => {
-    //       this.$message.error("查询出错！");
-    //     });
-    // },
-    // handleDelete: function (row) {
-    //   this.$confirm("此操作将该管理员删除, 是否继续?", "提示", {
-    //     confirmButtonText: "确定",
-    //     cancelButtonText: "取消",
-    //     type: "warning",
-    //   })
-    //     .then((res) => {
-    //       console.log(res);
-    //       console.log(row);
-    //       //   let params = new URLSearchParams();
-    //       //   adminUids.push(row.uid);
-    //       //   params.append("uid", row.uid);
-    //       console.log(row.uid);
-    //       deleteAdmin(row.uid).then((res) => {
-    //         console.log(res);
-    //         if (res.code == 200) {
-    //           this.$message({
-    //             type: "success",
-    //             message: "删除成功!",
-    //           });
-    //           this.initData();
-    //         }
-    //       });
-    //     })
-    //     .catch(() => {
-    //       this.$commonUtil.message.info("已取消删除");
-    //     });
-    // },
-    // handleCurrentChange: function (val) {
-    //   this.currentPage = val;
-    //   this.initData();
-    // },
-    // submitForm: function () {
-    //   this.$refs.form.validate((valid) => {
-    //     if (!valid) {
-    //       console.log("校验出错");
-    //     } else {
-    //       console.log(this.form.nickName);
-    //       console.log(this.form);
-    //       addAdmin(this.form).then((response) => {
-    //         if (response.code == 200) {
-    //           this.$message({
-    //             message: response.message,
-    //             type: "success",
-    //           });
-    //           this.dialogFormVisible = false;
-    //           this.initData();
-    //         } else {
-    //           this.$commonUtil.message.error(response.message);
-    //         }
-    //       });
-    //     }
-    //   });
-    // },
+    handleFind: function () {
+      this.roleList();
+    },
+    roleList: function () {
+      var params = {};
+      params.keyword = this.keyword;
+      params.currentPage = this.currentPage;
+      params.pageSize = this.pageSize;
+
+      getRolePageList(params).then((response) => {
+        console.log(response);
+        if (response.code == 200) {
+          var data = response.data.records;
+
+          //初始化菜单UID
+          for (let a = 0; a < data.length; a++) {
+            if (data[a].menuUids) {
+              data[a].menuUids = eval("(" + data[a].menuUids + ")");
+            } else {
+              data[a].menuUids = [];
+            }
+          }
+          this.tableData = data;
+          this.currentPage = response.data.current;
+          this.pageSize = response.data.size;
+          this.total = response.data.total;
+        }
+      });
+    },
+    getFormObject: function () {
+      var formObject = {
+        uid: null,
+        roleName: null,
+        introduce: null,
+        menuUids: [],
+      };
+      return formObject;
+    },
+
+    handleAdd: function () {
+      this.title = "增加角色";
+      this.dialogFormVisible = true;
+      this.form = this.getFormObject();
+      setTimeout(() => {
+        this.$refs.tree.setCheckedKeys(this.form.menuUids);
+      }, 100);
+      this.isEditForm = false;
+    },
+
+    handleEdit: function (row) {
+      this.title = "编辑角色";
+      this.dialogFormVisible = true;
+      this.isEditForm = true;
+      this.form = row;
+      setTimeout(() => {
+        this.$refs.tree.setCheckedKeys(this.form.menuUids);
+      }, 100);
+    },
+
+    handleDelete: function (row) {
+      var that = this;
+      this.$confirm("此操作将把分类删除, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          var params = {};
+          params.uid = row.uid;
+
+          deleteRole(params).then((response) => {
+            if (response.code == "success") {
+              this.$message({
+                type: "success",
+                message: response.data.message,
+              });
+            } else {
+              this.$message({
+                type: "error",
+                message: response.data.message,
+              });
+            }
+            that.roleList();
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
+    },
+    handleCurrentChange: function (val) {
+      this.currentPage = val;
+      this.roleList();
+    },
+    submitForm: function () {
+      this.$refs.form.validate((valid) => {
+        if (!valid) {
+          console.log("校验出错");
+        } else {
+          //得到选中树的UID
+          var menuUids = this.$refs.tree.getCheckedKeys();
+          console.log("全选UID", menuUids);
+
+          this.form.menuUids = JSON.stringify(menuUids);
+          if (this.isEditForm) {
+            console.log("form", this.form);
+            updateRole(this.form).then((response) => {
+              console.log(response);
+              if (response.code == 200) {
+                this.$message({
+                  type: "success",
+                  message: response.data.message,
+                });
+                this.dialogFormVisible = false;
+                this.roleList();
+              } else {
+                this.$message({
+                  type: "success",
+                  message: response.data.message,
+                });
+              }
+            });
+          } else {
+            addRole(this.form).then((response) => {
+              console.log(response);
+              if (response.code == 200) {
+                this.$message({
+                  type: "success",
+                  message: response.data.message,
+                });
+                this.dialogFormVisible = false;
+                this.roleList();
+              } else {
+                this.$message({
+                  type: "error",
+                  message: response.data.message,
+                });
+              }
+            });
+          }
+        }
+      });
+    },
   },
 };
 </script>
-
-<style>
-</style>

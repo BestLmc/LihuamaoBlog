@@ -213,6 +213,7 @@
 import {
   getAdminPageList,
   addAdmin,
+  updateAdmin,
   deleteAdmin,
   getAdmin,
 } from "@/api/authority/admin";
@@ -242,7 +243,7 @@ export default {
       formLabelWidth: "120px",
       title: "增加管理员",
       icon: true, //控制删除图标的显示
-
+      isEditForm: false,
       rules: {
         userName: [
           { required: true, message: "用户名不能为空", trigger: "blur" },
@@ -303,6 +304,7 @@ export default {
     },
     handleAdd: function () {
       this.dialogFormVisible = true;
+      this.isEditForm = false;
     },
     handRest: function (row) {
       var that = this;
@@ -321,6 +323,7 @@ export default {
     },
     handleEdit: function (row) {
       this.dialogFormVisible = true;
+      this.isEditForm = true;
       getAdmin(row.uid)
         .then((res) => {
           console.log(res);
@@ -369,20 +372,35 @@ export default {
         if (!valid) {
           console.log("校验出错");
         } else {
-          console.log(this.form.nickName);
-          console.log(this.form);
-          addAdmin(this.form).then((response) => {
-            if (response.code == 200) {
-              this.$message({
-                message: response.message,
-                type: "success",
-              });
-              this.dialogFormVisible = false;
-              this.initData();
-            } else {
-              this.$commonUtil.message.error(response.message);
-            }
-          });
+          if (this.isEditForm) {
+            console.log(this.form.nickName);
+            console.log(this.form);
+            updateAdmin(this.form).then((response) => {
+              if (response.code == 200) {
+                this.$message({
+                  message: response.message,
+                  type: "success",
+                });
+                this.dialogFormVisible = false;
+                this.initData();
+              } else {
+                this.$commonUtil.message.error(response.message);
+              }
+            });
+          } else {
+            addAdmin(this.form).then((response) => {
+              if (response.code == 200) {
+                this.$message({
+                  message: response.message,
+                  type: "success",
+                });
+                this.dialogFormVisible = false;
+                this.initData();
+              } else {
+                this.$commonUtil.message.error(response.message);
+              }
+            });
+          }
         }
       });
     },

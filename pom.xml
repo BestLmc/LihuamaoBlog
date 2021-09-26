@@ -6,9 +6,9 @@
     <modules>
         <module>lihuamao_base</module>
         <module>lihuamao_commons</module>
-        <module>lihuamao_admin</module>
         <module>lihuamao_web</module>
-        <module>lihuamao_services</module>
+        <module>lihuamao_biz</module>
+        <module>lihuamao_api</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
